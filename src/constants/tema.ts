@@ -40,3 +40,7 @@ export const tamanios = {
   marcoEscaner: 220,
   anchoMarcoEscaner: 2,
 } as const;
+
+export const opacidad = {
+  presionado: 0.7,
+} as const;
