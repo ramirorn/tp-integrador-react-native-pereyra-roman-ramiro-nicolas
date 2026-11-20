@@ -16,14 +16,18 @@ export default function TabsLayout() {
         options={{
           title: 'Catálogo',
           headerShown: false,
-          tabBarIcon: ({ color, size }) => <Ionicons name="library" color={color} size={size} />,
+          tabBarIcon: ({ focused, size }) => (
+            <Ionicons name="library" size={size} color={focused ? colores.primario : colores.textoSecundario} />
+          ),
         }}
       />
       <Tabs.Screen
         name="reservas"
         options={{
           title: 'Mis reservas',
-          tabBarIcon: ({ color, size }) => <Ionicons name="bookmarks" color={color} size={size} />,
+          tabBarIcon: ({ focused, size }) => (
+            <Ionicons name="bookmarks" size={size} color={focused ? colores.primario : colores.textoSecundario} />
+          ),
         }}
       />
     </Tabs>
