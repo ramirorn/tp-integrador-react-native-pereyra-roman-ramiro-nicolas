@@ -40,7 +40,7 @@ export default function PantallaLibro() {
 
   return (
     <>
-      <Stack.Screen options={{ title: libro.titulo }} />
+      <Stack.Screen options={{ title: '' }} />
       <DetalleLibro libro={libro} />
     </>
   );
