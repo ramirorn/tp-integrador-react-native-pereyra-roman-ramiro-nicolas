@@ -1,7 +1,8 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { type Href, Link } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colores, espaciado, tamanios } from '../constants/tema';
+import { colores, espaciado, sombras, tamanios, tipografia } from '../constants/tema';
 
 type Props = {
   titulo: string;
@@ -13,13 +14,18 @@ type Props = {
 export function MensajeConEnlace({ titulo, mensaje, textoEnlace, destino }: Props) {
   return (
     <View style={estilos.contenedor}>
-      <Text style={estilos.titulo} accessibilityRole="header">
-        {titulo}
-      </Text>
-      <Text style={estilos.mensaje}>{mensaje}</Text>
-      <Link href={destino} replace style={estilos.enlace}>
-        {textoEnlace}
-      </Link>
+      <View style={estilos.tarjeta}>
+        <View style={estilos.circulo}>
+          <Ionicons name="book-outline" size={tamanios.iconoGrande} color={colores.bosque} />
+        </View>
+        <Text style={estilos.titulo} accessibilityRole="header">
+          {titulo}
+        </Text>
+        <Text style={estilos.mensaje}>{mensaje}</Text>
+        <Link href={destino} replace accessibilityRole="button" style={estilos.enlace}>
+          {textoEnlace}
+        </Link>
+      </View>
     </View>
   );
 }
@@ -27,16 +33,31 @@ export function MensajeConEnlace({ titulo, mensaje, textoEnlace, destino }: Prop
 const estilos = StyleSheet.create({
   contenedor: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
+    padding: espaciado.lg,
+    backgroundColor: colores.fondo,
+  },
+  tarjeta: {
+    alignItems: 'center',
     gap: espaciado.md,
     padding: espaciado.xl,
-    backgroundColor: colores.fondo,
+    backgroundColor: colores.superficie,
+    borderRadius: tamanios.radioTarjeta,
+    boxShadow: sombras.tarjeta,
+  },
+  circulo: {
+    width: tamanios.circuloIcono,
+    height: tamanios.circuloIcono,
+    borderRadius: tamanios.radioPildora,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colores.placa,
   },
   titulo: {
     color: colores.texto,
     fontSize: tamanios.titulo,
-    fontWeight: '700',
+    fontWeight: tipografia.pesoTitular,
+    letterSpacing: tipografia.interletraTitular,
     textAlign: 'center',
   },
   mensaje: {
@@ -45,12 +66,16 @@ const estilos = StyleSheet.create({
     textAlign: 'center',
   },
   enlace: {
+    marginTop: espaciado.sm,
     minHeight: tamanios.toqueMinimo,
+    paddingHorizontal: espaciado.xl,
     paddingVertical: espaciado.md,
-    paddingHorizontal: espaciado.lg,
-    color: colores.primario,
+    overflow: 'hidden',
+    borderRadius: tamanios.radioPildora,
+    backgroundColor: colores.bosque,
+    color: colores.textoSobreBosque,
     fontSize: tamanios.texto,
-    fontWeight: '600',
-    textDecorationLine: 'underline',
+    fontWeight: tipografia.pesoFuerte,
+    textAlign: 'center',
   },
 });

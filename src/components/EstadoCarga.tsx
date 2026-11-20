@@ -9,7 +9,7 @@ type Props = {
 export function EstadoCarga({ mensaje }: Props) {
   return (
     <View style={estilos.contenedor} accessibilityRole="progressbar" accessibilityLabel={mensaje}>
-      <ActivityIndicator size="large" color={colores.primario} />
+      <ActivityIndicator size="large" color={colores.bosque} />
       <Text style={estilos.texto}>{mensaje}</Text>
     </View>
   );
@@ -20,7 +20,7 @@ const estilos = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: espaciado.md,
-    padding: espaciado.xl,
+    padding: espaciado.xxl,
   },
   texto: {
     color: colores.textoSecundario,

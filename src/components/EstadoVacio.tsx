@@ -10,7 +10,9 @@ type Props = {
 export function EstadoVacio({ mensaje }: Props) {
   return (
     <View style={estilos.contenedor}>
-      <Ionicons name="library-outline" size={tamanios.iconoGrande} color={colores.deshabilitado} />
+      <View style={estilos.circulo}>
+        <Ionicons name="library-outline" size={tamanios.iconoGrande} color={colores.bosque} />
+      </View>
       <Text style={estilos.texto}>{mensaje}</Text>
     </View>
   );
@@ -21,7 +23,15 @@ const estilos = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: espaciado.md,
-    padding: espaciado.xl,
+    padding: espaciado.xxl,
+  },
+  circulo: {
+    width: tamanios.circuloIcono,
+    height: tamanios.circuloIcono,
+    borderRadius: tamanios.radioPildora,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colores.placa,
   },
   texto: {
     color: colores.textoSecundario,
