@@ -99,7 +99,7 @@ const estilos = StyleSheet.create({
   },
   etiquetaContador: {
     color: colores.textoSecundario,
-    fontSize: tamanios.textoMini,
+    fontSize: tamanios.textoMicro,
   },
   numero: {
     color: colores.bosque,

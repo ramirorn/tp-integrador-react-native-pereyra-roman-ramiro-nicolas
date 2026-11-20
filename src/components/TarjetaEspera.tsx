@@ -66,7 +66,7 @@ const estilos = StyleSheet.create({
   },
   etiquetaPosicion: {
     color: colores.textoSobreBosqueSuave,
-    fontSize: tamanios.textoMini,
+    fontSize: tamanios.textoMicro,
   },
   numero: {
     color: colores.menta,

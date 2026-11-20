@@ -79,7 +79,7 @@ const estilos = StyleSheet.create({
     fontWeight: tipografia.pesoTitular,
   },
   tituloChico: {
-    fontSize: tamanios.textoMini,
+    fontSize: tamanios.textoMicro,
   },
   autorRespaldo: {
     color: colores.textoSobreBosqueSuave,

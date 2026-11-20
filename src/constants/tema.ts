@@ -3,6 +3,7 @@
 export const colores = {
   bosque: '#0E4D3A',
   bosqueProfundo: '#0A3328',
+  bosqueMedio: '#1F7A57',
   menta: '#3DDC97',
   mentaClara: '#BDF2D7',
   placa: '#DDF6EA',
@@ -26,7 +27,7 @@ export const colores = {
 } as const;
 
 export const degradados = {
-  heroe: `linear-gradient(135deg, ${colores.bosque} 0%, #1F7A57 55%, ${colores.menta} 100%)`,
+  heroe: `linear-gradient(135deg, ${colores.bosque} 0%, ${colores.bosqueMedio} 55%, ${colores.menta} 100%)`,
   placa: `linear-gradient(160deg, ${colores.superficie} 0%, ${colores.placa} 100%)`,
 } as const;
 
@@ -46,7 +47,6 @@ export const espaciado = {
 } as const;
 
 export const tamanios = {
-  textoMini: 11,
   textoMicro: 11,
   textoChico: 13,
   texto: 15,
@@ -75,6 +75,7 @@ export const tamanios = {
   marcoEscaner: 220,
   anchoMarcoEscaner: 2,
   circuloIcono: 72,
+  inclinacionPortada: '6deg',
 } as const;
 
 export const tipografia = {

@@ -65,6 +65,6 @@ const estilos = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   portada: {
-    transform: [{ rotate: '6deg' }],
+    transform: [{ rotate: tamanios.inclinacionPortada }],
   },
 });
