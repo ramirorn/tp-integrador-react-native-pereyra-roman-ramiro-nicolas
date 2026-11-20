@@ -26,7 +26,7 @@ export async function crearCanalPrestamos(): Promise<void> {
     name: 'Préstamos',
     description: 'Recordatorios de devolución y libros listos para retirar.',
     importance: AndroidImportance.HIGH,
-    lightColor: colores.primario,
+    lightColor: colores.bosque,
   });
 }
 
