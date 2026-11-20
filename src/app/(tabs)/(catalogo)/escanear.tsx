@@ -91,12 +91,14 @@ const estilos = StyleSheet.create({
   contenedor: {
     gap: espaciado.lg,
     padding: espaciado.lg,
+    paddingBottom: tamanios.espacioBarra,
   },
   aviso: {
     color: colores.aviso,
     fontSize: tamanios.texto,
-    padding: espaciado.md,
+    padding: espaciado.lg,
+    overflow: 'hidden',
     backgroundColor: colores.avisoSuave,
-    borderRadius: tamanios.radio,
+    borderRadius: tamanios.radioTarjeta,
   },
 });

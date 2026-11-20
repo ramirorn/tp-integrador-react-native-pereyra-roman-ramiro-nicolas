@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colores, espaciado, tamanios } from '../constants/tema';
+import { colores, degradados, espaciado, sombras, tamanios, tipografia } from '../constants/tema';
 import { useBiblioteca } from '../hooks/useBiblioteca';
 import { usePermiso } from '../hooks/usePermiso';
 import type { Recurso } from '../types';
@@ -50,7 +50,9 @@ export function PantallaPermiso({ recurso, isbn }: Props) {
 
   return (
     <View style={estilos.contenedor}>
-      <Ionicons name={contenido.icono} size={tamanios.iconoGrande} color={colores.primario} />
+      <View style={estilos.circulo}>
+        <Ionicons name={contenido.icono} size={tamanios.iconoGrande} color={colores.menta} />
+      </View>
       <Text style={estilos.titulo} accessibilityRole="header">
         {contenido.titulo}
       </Text>
@@ -59,18 +61,18 @@ export function PantallaPermiso({ recurso, isbn }: Props) {
       {estado === 'concedido' && (
         <>
           <Text style={estilos.nota}>El permiso ya está concedido.</Text>
-          <Boton titulo="Volver" onPress={() => router.back()} />
+          <Boton titulo="Volver" variante="secundario" onPress={() => router.back()} />
         </>
       )}
       {estado === 'preguntable' && (
-        <Boton titulo="Continuar" onPress={continuar} deshabilitado={pidiendo} />
+        <Boton titulo="Continuar" icono="arrow-forward" onPress={continuar} deshabilitado={pidiendo} />
       )}
       {estado === 'bloqueado' && (
         <>
           <Text style={estilos.nota}>
             El permiso está bloqueado. Podés habilitarlo desde los Ajustes del teléfono.
           </Text>
-          <Boton titulo="Abrir Ajustes" onPress={abrirAjustes} />
+          <Boton titulo="Abrir Ajustes" icono="settings-outline" onPress={abrirAjustes} />
         </>
       )}
     </View>
@@ -84,12 +86,23 @@ const estilos = StyleSheet.create({
     justifyContent: 'center',
     gap: espaciado.lg,
     padding: espaciado.xl,
+    backgroundImage: degradados.placa,
     backgroundColor: colores.fondo,
+  },
+  circulo: {
+    width: tamanios.circuloIcono + espaciado.xl,
+    height: tamanios.circuloIcono + espaciado.xl,
+    borderRadius: tamanios.radioPildora,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colores.bosque,
+    boxShadow: sombras.flotante,
   },
   titulo: {
     color: colores.texto,
-    fontSize: tamanios.titulo,
-    fontWeight: '700',
+    fontSize: tamanios.tituloGrande,
+    fontWeight: tipografia.pesoTitular,
+    letterSpacing: tipografia.interletraTitular,
   },
   beneficio: {
     color: colores.texto,

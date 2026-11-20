@@ -33,7 +33,7 @@ const estilos = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-    borderRadius: tamanios.radio,
+    borderRadius: tamanios.radioTarjeta,
     backgroundColor: colores.camaraFondo,
   },
   camara: {
@@ -47,13 +47,13 @@ const estilos = StyleSheet.create({
     width: tamanios.marcoEscaner,
     height: tamanios.marcoEscaner / 2,
     borderWidth: tamanios.anchoMarcoEscaner,
-    borderColor: colores.textoInverso,
+    borderColor: colores.menta,
     borderRadius: tamanios.radio,
   },
   ayuda: {
     position: 'absolute',
     bottom: espaciado.md,
-    color: colores.textoInverso,
+    color: colores.superficie,
     fontSize: tamanios.textoChico,
   },
 });

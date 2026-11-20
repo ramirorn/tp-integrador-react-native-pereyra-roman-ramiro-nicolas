@@ -1,8 +1,9 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { LARGO_ISBN } from '../constants/biblioteca';
-import { colores, espaciado, tamanios } from '../constants/tema';
+import { colores, espaciado, sombras, tamanios, tipografia } from '../constants/tema';
 import { Boton } from './Boton';
 
 type Props = {
@@ -20,50 +21,79 @@ export function IngresoIsbn({ onIsbn }: Props) {
   }
 
   return (
-    <View style={estilos.contenedor}>
-      <Text style={estilos.titulo}>¿No podés escanear? Escribí el ISBN</Text>
-      <TextInput
-        style={estilos.entrada}
-        value={texto}
-        onChangeText={(valor) => {
-          setTexto(valor);
-          setError(null);
-        }}
-        placeholder="Ej.: 9789897220715"
-        placeholderTextColor={colores.textoSecundario}
-        keyboardType="number-pad"
-        maxLength={LARGO_ISBN + 4}
-        accessibilityLabel="ISBN del libro"
-        onSubmitEditing={buscar}
-      />
+    <View style={estilos.tarjeta}>
+      <Text style={estilos.titulo}>¿No podés escanear?</Text>
+      <Text style={estilos.texto}>Escribí los 13 números del ISBN.</Text>
+      <View style={[estilos.campo, error !== null && estilos.campoError]}>
+        <Ionicons name="keypad-outline" size={tamanios.icono} color={colores.textoSecundario} />
+        <TextInput
+          style={estilos.entrada}
+          value={texto}
+          onChangeText={(valor) => {
+            setTexto(valor);
+            setError(null);
+          }}
+          placeholder="Ej.: 9788499089515"
+          placeholderTextColor={colores.textoSecundario}
+          selectionColor={colores.bosque}
+          keyboardType="number-pad"
+          maxLength={LARGO_ISBN + 4}
+          accessibilityLabel="ISBN del libro"
+          onSubmitEditing={buscar}
+        />
+      </View>
       {error && (
         <Text style={estilos.error} accessibilityRole="alert">
           {error}
         </Text>
       )}
-      <Boton titulo="Abrir libro" onPress={buscar} deshabilitado={texto.trim() === ''} />
+      <Boton
+        titulo="Abrir libro"
+        icono="arrow-forward"
+        onPress={buscar}
+        deshabilitado={texto.trim() === ''}
+      />
     </View>
   );
 }
 
 const estilos = StyleSheet.create({
-  contenedor: {
+  tarjeta: {
     gap: espaciado.md,
+    padding: espaciado.lg,
+    backgroundColor: colores.superficie,
+    borderRadius: tamanios.radioTarjeta,
+    boxShadow: sombras.tarjeta,
   },
   titulo: {
     color: colores.texto,
     fontSize: tamanios.subtitulo,
-    fontWeight: '600',
+    fontWeight: tipografia.pesoTitular,
   },
-  entrada: {
-    minHeight: tamanios.toqueMinimo,
-    paddingHorizontal: espaciado.md,
-    fontSize: tamanios.texto,
-    color: colores.texto,
-    backgroundColor: colores.superficie,
+  texto: {
+    color: colores.textoSecundario,
+    fontSize: tamanios.textoChico,
+  },
+  campo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: espaciado.sm,
+    paddingHorizontal: espaciado.lg,
+    minHeight: tamanios.toqueMinimo + espaciado.sm,
+    borderRadius: tamanios.radioPildora,
     borderWidth: tamanios.borde,
     borderColor: colores.borde,
-    borderRadius: tamanios.radio,
+    backgroundColor: colores.fondo,
+  },
+  campoError: {
+    borderColor: colores.error,
+  },
+  entrada: {
+    flex: 1,
+    minHeight: tamanios.toqueMinimo,
+    fontSize: tamanios.subtitulo,
+    color: colores.texto,
+    fontVariant: ['tabular-nums'],
   },
   error: {
     color: colores.error,
