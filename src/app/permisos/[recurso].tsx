@@ -27,7 +27,7 @@ export default function Permiso() {
   return (
     <>
       <Stack.Screen options={{ title: recurso === 'camara' ? 'Cámara' : 'Notificaciones' }} />
-      {/* key: si cambia el recurso se monta otra instancia y otro hook nativo */}
+      {/* key: cada recurso tiene su propia instancia y su propio estado */}
       <PantallaPermiso key={recurso} recurso={recurso} isbn={isbn} />
     </>
   );

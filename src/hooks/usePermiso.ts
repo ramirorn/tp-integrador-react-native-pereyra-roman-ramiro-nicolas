@@ -7,22 +7,18 @@ import { calcularEstadoPermiso } from '../lib/permisos';
 import type { EstadoPermiso, Recurso } from '../types';
 import { usePermisosNotificaciones } from './usePermisosNotificaciones';
 
-const HOOKS_NATIVOS = {
-  camara: useCameraPermissions,
-  notificaciones: usePermisosNotificaciones,
-} as const;
-
 type Permiso = {
   estado: EstadoPermiso;
   pedir: () => Promise<boolean>;
   abrirAjustes: () => Promise<void>;
 };
 
-// El recurso no debe cambiar durante la vida del componente: decide qué
-// hook nativo se llama. Las pantallas usan key={recurso} para garantizarlo.
 export function usePermiso(recurso: Recurso): Permiso {
-  const usePermisoNativo = HOOKS_NATIVOS[recurso];
-  const [respuesta, pedirNativo, obtener] = usePermisoNativo();
+  // Los dos hooks se llaman siempre (reglas de los hooks), pero solo el del
+  // recurso pedido consulta al sistema al montarse.
+  const camara = useCameraPermissions({ get: recurso === 'camara' });
+  const notificaciones = usePermisosNotificaciones({ get: recurso === 'notificaciones' });
+  const [respuesta, pedirNativo, obtener] = recurso === 'camara' ? camara : notificaciones;
 
   // Volver de Ajustes: la app pasa de segundo plano a "active".
   useEffect(() => {

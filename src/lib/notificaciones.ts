@@ -1,4 +1,5 @@
 import * as Notifications from 'expo-notifications';
+import { AndroidImportance } from 'expo-notifications';
 import { Platform } from 'react-native';
 
 import { CANAL_PRESTAMOS, SEGUNDOS_RECORDATORIO } from '../constants/biblioteca';
@@ -24,7 +25,7 @@ export async function crearCanalPrestamos(): Promise<void> {
   await Notifications.setNotificationChannelAsync(CANAL_PRESTAMOS, {
     name: 'Préstamos',
     description: 'Recordatorios de devolución y libros listos para retirar.',
-    importance: Notifications.AndroidImportance.HIGH,
+    importance: AndroidImportance.HIGH,
     lightColor: colores.primario,
   });
 }
