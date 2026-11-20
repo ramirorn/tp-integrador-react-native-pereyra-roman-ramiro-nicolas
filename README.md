@@ -162,4 +162,21 @@ Tests:       10 passed, 10 total
 
 ## Capturas
 
-Las capturas pedidas en la consigna (catálogo cargando / error / datos, buscador, detalle inexistente, reserva con y sin ejemplares, escáner en sus cuatro estados, notificación recibida, mostrador antes y después de entregar y 404) van en la carpeta `capturas/`, tomadas en Expo Go sobre un teléfono real.
+Tomadas en la versión web de la app (`npx expo start --web`) con un viewport de teléfono (375 × 812). Están en [`capturas/`](capturas/).
+
+| Pedido de la consigna | Captura |
+| --- | --- |
+| Catálogo cargando | [01-catalogo-cargando](capturas/01-catalogo-cargando.jpg) |
+| Catálogo con error | [02-catalogo-error](capturas/02-catalogo-error.jpg) |
+| Catálogo con datos | [03-catalogo-datos](capturas/03-catalogo-datos.jpg) |
+| Buscador | [04-buscador](capturas/04-buscador.jpg) |
+| Detalle inexistente | [05-detalle-inexistente](capturas/05-detalle-inexistente.jpg), [06-detalle-isbn-invalido](capturas/06-detalle-isbn-invalido.jpg) |
+| Reserva con ejemplares | [07-reserva-con-ejemplares](capturas/07-reserva-con-ejemplares.jpg) |
+| Reserva sin ejemplares | [08-reserva-sin-ejemplares](capturas/08-reserva-sin-ejemplares.jpg), [09-mis-reservas](capturas/09-mis-reservas.jpg) |
+| Escáner | [10-escaner-preguntable](capturas/10-escaner-preguntable.jpg), [11-permiso-camara](capturas/11-permiso-camara.jpg), [12-escaner-isbn-inexistente](capturas/12-escaner-isbn-inexistente.jpg) |
+| Aviso sin permiso de notificaciones | [13-permiso-notificaciones-bloqueado](capturas/13-permiso-notificaciones-bloqueado.jpg), [18-aviso-dentro-de-la-app](capturas/18-aviso-dentro-de-la-app.jpg) |
+| Login | [14-login-clave-incorrecta](capturas/14-login-clave-incorrecta.jpg) |
+| Mostrador antes y después de “Entregar al siguiente” | [15-mostrador-antes](capturas/15-mostrador-antes.jpg), [16-mostrador-despues](capturas/16-mostrador-despues.jpg), [17-mostrador-entregado-a-vos](capturas/17-mostrador-entregado-a-vos.jpg) |
+| Pantalla 404 | [19-pantalla-404](capturas/19-pantalla-404.jpg) |
+
+En el navegador no se pueden reproducir el escáner con la cámara concedida o bloqueada por el sistema ni una notificación del sistema: esos estados dependen del teléfono. El estado bloqueado se ve en la captura 13 (las notificaciones del navegador aparecen bloqueadas) y el aviso que reemplaza a la notificación, en la 18.
