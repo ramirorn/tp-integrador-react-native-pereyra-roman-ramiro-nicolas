@@ -4,7 +4,7 @@ import { EncabezadoReservas } from '../../components/EncabezadoReservas';
 import { EstadoVacio } from '../../components/EstadoVacio';
 import { TarjetaEspera } from '../../components/TarjetaEspera';
 import { TarjetaPrestamo } from '../../components/TarjetaPrestamo';
-import { colores } from '../../constants/tema';
+import { colores, tamanios } from '../../constants/tema';
 import { useBiblioteca } from '../../hooks/useBiblioteca';
 import { posicionEnEspera } from '../../lib/reservas';
 import type { Prestamo } from '../../types';
@@ -28,6 +28,7 @@ export default function MisReservas() {
   return (
     <FlatList
       style={estilos.lista}
+      contentContainerStyle={estilos.contenido}
       data={items}
       keyExtractor={(item) => item.isbn}
       renderItem={({ item }) =>
@@ -37,7 +38,7 @@ export default function MisReservas() {
           <TarjetaEspera isbn={item.isbn} posicion={item.posicion} />
         )
       }
-      ListHeaderComponent={EncabezadoReservas}
+      ListHeaderComponent={<EncabezadoReservas hayItems={items.length > 0} />}
       ListEmptyComponent={
         <EstadoVacio mensaje="Todavía no tenés préstamos ni reservas. Buscá un libro en el Catálogo." />
       }
@@ -49,5 +50,8 @@ const estilos = StyleSheet.create({
   lista: {
     flex: 1,
     backgroundColor: colores.fondo,
+  },
+  contenido: {
+    paddingBottom: tamanios.espacioBarra,
   },
 });
