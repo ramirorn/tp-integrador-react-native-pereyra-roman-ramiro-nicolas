@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 import { StyleSheet } from 'react-native';
 
-import { colores } from '../constants/tema';
+import { colores, tamanios, tipografia } from '../constants/tema';
 import { useBiblioteca } from '../hooks/useBiblioteca';
 
 // Vive dentro del provider para poder leer la sesión y proteger rutas.
@@ -11,7 +11,10 @@ export function NavegacionRaiz() {
   return (
     <Stack
       screenOptions={{
-        headerTintColor: colores.primario,
+        headerStyle: estilos.encabezado,
+        headerShadowVisible: false,
+        headerTintColor: colores.bosque,
+        headerTitleStyle: estilos.tituloEncabezado,
         contentStyle: estilos.contenido,
       }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -36,6 +39,14 @@ export function NavegacionRaiz() {
 }
 
 const estilos = StyleSheet.create({
+  encabezado: {
+    backgroundColor: colores.fondo,
+  },
+  tituloEncabezado: {
+    color: colores.texto,
+    fontSize: tamanios.subtitulo,
+    fontWeight: tipografia.pesoTitular,
+  },
   contenido: {
     backgroundColor: colores.fondo,
   },
