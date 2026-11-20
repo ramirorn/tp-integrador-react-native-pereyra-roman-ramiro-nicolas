@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-20T00:00:00Z",
+  "title": "Design System: Biblioteca IPF",
+  "extensions": {
+    "colorMeta": {
+      "forest": { "role": "primary", "displayName": "Forest Green", "canonical": "#0E4D3A", "tonalRamp": ["#04150F", "#082A20", "#0E4D3A", "#1F7A57", "#3E9C77", "#7BC3A4", "#B5E0CC", "#E1F4EB"] },
+      "forest-deep": { "role": "primary", "displayName": "Deep Forest", "canonical": "#0A3328", "tonalRamp": ["#030E0A", "#06201A", "#0A3328", "#124D3D", "#2A6E5A", "#5F9C88", "#A3CBBD", "#DCEEE7"] },
+      "mint": { "role": "secondary", "displayName": "Fresh Mint", "canonical": "#3DDC97", "tonalRamp": ["#0C3A27", "#146B47", "#1FA168", "#3DDC97", "#6AE8B0", "#98F0C8", "#C4F7E0", "#E8FCF3"] },
+      "mint-light": { "role": "secondary", "displayName": "Light Mint", "canonical": "#BDF2D7", "tonalRamp": ["#2E5F49", "#4B8C6D", "#74BA96", "#9BE0BC", "#BDF2D7", "#D3F7E5", "#E6FBF0", "#F4FEF9"] },
+      "mint-plate": { "role": "neutral", "displayName": "Mint Plate", "canonical": "#DDF6EA", "tonalRamp": ["#2F5444", "#4F7D69", "#78A692", "#A3CDBA", "#C4E6D6", "#DDF6EA", "#ECFAF3", "#F7FDFA"] },
+      "canvas": { "role": "neutral", "displayName": "Mint Mist Canvas", "canonical": "#F3FCF8", "tonalRamp": ["#3A5249", "#60786E", "#8AA399", "#B3C8BF", "#D3E3DC", "#E6F1EC", "#F3FCF8", "#FBFFFD"] },
+      "ink": { "role": "neutral", "displayName": "Shelf Ink", "canonical": "#0D1F19", "tonalRamp": ["#040A08", "#0D1F19", "#1F3A2F", "#355248", "#4C6359", "#7C9188", "#AFBDB6", "#DCE5E0"] },
+      "error": { "role": "status", "displayName": "Error", "canonical": "#B42318", "tonalRamp": ["#3A0B07", "#6C1510", "#B42318", "#D44D3F", "#E7796C", "#F2A89E", "#FAD2CC", "#FDE6E3"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Figure", "purpose": "Large tabular numerals on stat cards." },
+      "headline": { "displayName": "Headline", "purpose": "Hero banner title, tight tracking." },
+      "title": { "displayName": "Title", "purpose": "Screen and section titles." },
+      "subtitle": { "displayName": "Subtitle", "purpose": "Button labels." },
+      "body": { "displayName": "Body", "purpose": "Book titles on cards and general text." },
+      "caption": { "displayName": "Caption", "purpose": "Authors, sublines, filter labels." },
+      "label": { "displayName": "Label", "purpose": "Tab labels and fallback-cover micro text." }
+    },
+    "shadows": [
+      { "name": "card", "value": "0px 8px 20px rgba(14, 77, 58, 0.10)", "purpose": "Book cards, stat cards, primary button, active filter tile." },
+      { "name": "floating", "value": "0px 10px 24px rgba(10, 51, 40, 0.28)", "purpose": "Tab bar, scan button, hero banner." },
+      { "name": "cover", "value": "0px 6px 12px rgba(13, 31, 25, 0.25)", "purpose": "Every book cover." }
+    ],
+    "motion": [
+      { "name": "pressed", "value": "opacity 0.75", "purpose": "Uniform pressed feedback on every pressable; no animated transitions defined." }
+    ],
+    "gradients": [
+      { "name": "hero", "value": "linear-gradient(135deg, #0E4D3A 0%, #1F7A57 55%, #3DDC97 100%)", "purpose": "Hero banner only." },
+      { "name": "plate", "value": "linear-gradient(160deg, #FFFFFF 0%, #DDF6EA 100%)", "purpose": "Mint plate behind covers." }
+    ],
+    "breakpoints": []
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Forest pill, the default action.",
+      "html": "<button class=\"ds-btn-primary\">Reservar</button>",
+      "css": ".ds-btn-primary { background: #0E4D3A; color: #E8F7EF; min-height: 56px; padding: 0 24px; border: none; border-radius: 999px; font-size: 17px; font-weight: 700; box-shadow: 0px 8px 20px rgba(14,77,58,0.10); cursor: pointer; } .ds-btn-primary:hover { background: #0A3328; } .ds-btn-primary:active { opacity: 0.75; } .ds-btn-primary:focus-visible { outline: 3px solid #3DDC97; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "White pill with hairline border for secondary actions.",
+      "html": "<button class=\"ds-btn-secondary\">Cancelar</button>",
+      "css": ".ds-btn-secondary { background: #FFFFFF; color: #0E4D3A; min-height: 56px; padding: 0 24px; border: 1px solid #D5E7DC; border-radius: 999px; font-size: 17px; font-weight: 700; cursor: pointer; } .ds-btn-secondary:hover { background: #F3FCF8; } .ds-btn-secondary:active { opacity: 0.75; } .ds-btn-secondary:focus-visible { outline: 3px solid #3DDC97; outline-offset: 2px; }"
+    },
+    {
+      "name": "Book Card",
+      "kind": "card",
+      "refersTo": "book-card",
+      "description": "Cover on a mint plate, title, author, availability and a circular add action.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-plate\"><div class=\"ds-cover\">Título del libro</div></div><div class=\"ds-body\"><div class=\"ds-title\">Título del libro</div><div class=\"ds-author\">Autor</div></div><div class=\"ds-foot\"><span class=\"ds-state\">2 libres</span><button class=\"ds-add\" aria-label=\"Reservar\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#E8F7EF\" stroke-width=\"2.5\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg></button></div></div>",
+      "css": ".ds-card { width: 168px; background: #FFFFFF; border-radius: 24px; overflow: hidden; box-shadow: 0px 8px 20px rgba(14,77,58,0.10); } .ds-plate { display: flex; justify-content: center; padding: 16px 0; background: linear-gradient(160deg, #FFFFFF 0%, #DDF6EA 100%); } .ds-cover { width: 88px; height: 132px; border-radius: 8px; background: #1F6F5C; color: #E8F7EF; font-size: 15px; font-weight: 700; padding: 8px; box-sizing: border-box; box-shadow: 0px 6px 12px rgba(13,31,25,0.25); } .ds-body { padding: 12px 12px 0; } .ds-title { color: #0D1F19; font-size: 15px; font-weight: 700; } .ds-author { color: #4C6359; font-size: 13px; margin-top: 4px; } .ds-foot { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px 12px; } .ds-state { color: #13704F; font-size: 15px; font-weight: 700; } .ds-add { width: 48px; height: 48px; border: none; border-radius: 999px; background: #0E4D3A; display: flex; align-items: center; justify-content: center; cursor: pointer; } .ds-add:active { opacity: 0.75; } .ds-add:focus-visible { outline: 3px solid #3DDC97; outline-offset: 2px; }"
+    },
+    {
+      "name": "Hero Banner",
+      "kind": "custom",
+      "refersTo": "hero-banner",
+      "description": "Forest-to-mint gradient banner with title, search pill and a tilted cover.",
+      "html": "<div class=\"ds-hero\"><div class=\"ds-hero-text\"><div class=\"ds-hero-title\">Leé más.<br>Reservá fácil.</div><div class=\"ds-hero-sub\">Buscá por título o autor, o escaneá la contratapa.</div><button class=\"ds-hero-btn\">Buscar</button></div><div class=\"ds-hero-cover\"></div></div>",
+      "css": ".ds-hero { display: flex; align-items: center; gap: 12px; padding: 24px; border-radius: 28px; background: linear-gradient(135deg, #0E4D3A 0%, #1F7A57 55%, #3DDC97 100%); box-shadow: 0px 10px 24px rgba(10,51,40,0.28); width: 340px; } .ds-hero-text { flex: 1; } .ds-hero-title { color: #FFFFFF; font-size: 28px; line-height: 32px; font-weight: 700; letter-spacing: -0.4px; } .ds-hero-sub { color: #E8F7EF; font-size: 13px; margin-top: 8px; } .ds-hero-btn { margin-top: 8px; background: #FFFFFF; color: #0E4D3A; min-height: 56px; padding: 0 24px; border: none; border-radius: 999px; font-size: 17px; font-weight: 700; cursor: pointer; } .ds-hero-btn:active { opacity: 0.75; } .ds-hero-cover { width: 100px; height: 150px; border-radius: 8px; background: #2D5A7B; transform: rotate(6deg); box-shadow: 0px 6px 12px rgba(13,31,25,0.25); }"
+    },
+    {
+      "name": "Category Tile",
+      "kind": "chip",
+      "refersTo": "category-tile",
+      "description": "Equal-width filter tile; active state inverts to forest.",
+      "html": "<button class=\"ds-tile\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0E4D3A\" stroke-width=\"2\"><path d=\"M4 5h6v14H4zM14 5h6v14h-6z\"/></svg><span>Novelas</span></button><button class=\"ds-tile ds-tile-on\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#3DDC97\" stroke-width=\"2\"><path d=\"M4 5h6v14H4zM14 5h6v14h-6z\"/></svg><span>Todos</span></button>",
+      "css": ".ds-tile { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 88px; min-height: 72px; margin-right: 8px; border: none; border-radius: 20px; background: #FFFFFF; color: #0D1F19; font-size: 13px; font-weight: 600; cursor: pointer; } .ds-tile:active { opacity: 0.75; } .ds-tile:focus-visible { outline: 3px solid #3DDC97; outline-offset: 2px; } .ds-tile-on { background: #0E4D3A; color: #E8F7EF; box-shadow: 0px 8px 20px rgba(14,77,58,0.10); }"
+    },
+    {
+      "name": "Stat Card",
+      "kind": "card",
+      "refersTo": "stat-card",
+      "description": "Caption over a large tabular figure; highlighted variant on forest.",
+      "html": "<div class=\"ds-stat\"><span class=\"ds-stat-l\">Ejemplares</span><span class=\"ds-stat-v\">3</span></div><div class=\"ds-stat ds-stat-on\"><span class=\"ds-stat-l\">En espera</span><span class=\"ds-stat-v\">2</span></div>",
+      "css": ".ds-stat { display: inline-flex; flex-direction: column; gap: 4px; width: 140px; padding: 16px; margin-right: 8px; border-radius: 24px; background: #FFFFFF; box-shadow: 0px 8px 20px rgba(14,77,58,0.10); } .ds-stat-l { color: #4C6359; font-size: 13px; } .ds-stat-v { color: #0D1F19; font-size: 34px; font-weight: 700; font-variant-numeric: tabular-nums; } .ds-stat-on { background: #0E4D3A; } .ds-stat-on .ds-stat-l { color: #A9D9C2; } .ds-stat-on .ds-stat-v { color: #3DDC97; }"
+    },
+    {
+      "name": "Floating Tab Bar",
+      "kind": "nav",
+      "refersTo": "tab-bar",
+      "description": "Deep forest floating bar with two tabs and a raised mint scan button.",
+      "html": "<div class=\"ds-nav\"><button class=\"ds-tab ds-tab-on\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"#3DDC97\"><path d=\"M4 5h4v14H4zM10 5h4v14h-4zM16 6l4 1-3 12-4-1z\"/></svg>Catálogo</button><span class=\"ds-gap\"></span><button class=\"ds-tab\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#A9D9C2\" stroke-width=\"2\"><path d=\"M6 3h12v18l-6-4-6 4z\"/></svg>Reservas</button><button class=\"ds-scan\" aria-label=\"Escanear código de barras\"><svg width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0A3328\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M4 6v12M8 6v12M12 6v12M16 6v12M20 6v12\"/></svg></button></div>",
+      "css": ".ds-nav { position: relative; display: flex; align-items: center; width: 340px; height: 68px; padding: 0 16px; margin-top: 30px; box-sizing: border-box; border-radius: 32px; background: #0A3328; box-shadow: 0px 10px 24px rgba(10,51,40,0.28); } .ds-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 48px; border: none; background: none; color: #A9D9C2; font-size: 11px; font-weight: 600; cursor: pointer; } .ds-tab-on { color: #3DDC97; } .ds-tab:active { opacity: 0.75; } .ds-gap { width: 80px; } .ds-scan { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); width: 64px; height: 64px; border-radius: 999px; border: 4px solid #F3FCF8; background: #3DDC97; display: flex; align-items: center; justify-content: center; box-shadow: 0px 10px 24px rgba(10,51,40,0.28); cursor: pointer; } .ds-scan:active { opacity: 0.75; } .ds-scan:focus-visible { outline: 3px solid #3DDC97; outline-offset: 3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Mint Shelf",
+    "overview": "Book covers are the product, and the system exists to display them. Each cover rests on a pale mint plate, like a bookshop window, while every action (reserve, search, scan, confirm) is marked by deep forest green. Mint itself is the spark: it appears on the active tab, the raised scan button, and a highlighted figure, never as a large fill. The reference the student supplied was a mint/green mobile shop UI, and the build keeps its grammar: rounded white cards over a tinted canvas, pill buttons, and a floating dark bar with a raised centre button.\n\nThe mood is calm, fresh and tidy. Density is low to medium: a two-column shelf of cards, large touch targets (48px minimum, buttons 56px), generous 16 to 24px gutters. Depth is soft and tinted green, never grey or hard. All copy is clear Argentine Spanish (voseo) addressed to the student.\n\nThe course imposes hard structural rules that shape the code: every colour, size and spacing value lives in src/constants/tema.ts, styles use StyleSheet.create only, and no inline styles. Any new surface must add to tema.ts first.",
+    "keyCharacteristics": [
+      "Forest green for actions, mint for emphasis, mint plate for covers.",
+      "Pill-shaped buttons and circular icon actions; cards at a 24px radius.",
+      "Soft green-tinted shadows; no borders on cards.",
+      "Floating tab bar with a raised centre scan action.",
+      "Platform system font, bold titles, small tight scale.",
+      "Pressed state is a uniform 0.75 opacity."
+    ],
+    "rules": [
+      { "name": "The Forest Commits Rule", "body": "Anything that does something (reserve, search, confirm, filter on) is forest green. Mint never carries an action fill except the scan button.", "section": "colors" },
+      { "name": "The Mint Spark Rule", "body": "Mint (#3DDC97) is an accent on dark forest surfaces, never text on a light surface and never a large fill.", "section": "colors" },
+      { "name": "The Tinted Neutral Rule", "body": "Every neutral leans green. No pure grey and no pure black outside the camera.", "section": "colors" },
+      { "name": "The Bold Title, Quiet Caption Rule", "body": "Hierarchy is carried by weight pairs (700 against 400/600), not by extra families or letter-spaced capitals.", "section": "typography" },
+      { "name": "The Tabular Figures Rule", "body": "Counts and numerals set in tabular-nums.", "section": "typography" },
+      { "name": "The Green Shadow Rule", "body": "Shadows are tinted forest or ink at low opacity and offset downward. No grey or hard-edged shadows.", "section": "elevation" },
+      { "name": "The Gradient Is for Two Things Rule", "body": "Gradients appear only on the hero banner (forest to mint, 135deg) and the cover plate (white to mint plate, 160deg).", "section": "elevation" }
+    ],
+    "dos": [
+      "Do add any new colour, size or spacing to src/constants/tema.ts and reference it; style with StyleSheet.create only.",
+      "Do place every book cover on the mint plate and give it the Cover shadow.",
+      "Do make interactive elements forest green and at least 48px (buttons 56px).",
+      "Do tint every shadow with forest or ink at low opacity.",
+      "Do give icon-only controls an accessibilityLabel and buttons accessibilityRole=\"button\".",
+      "Do keep copy in clear Argentine Spanish and explain failures with a visible way forward."
+    ],
+    "donts": [
+      "Don't use mint (#3DDC97) as a text colour on light surfaces or as a large fill.",
+      "Don't add pure grey, pure black (outside the camera) or hard-edged shadows.",
+      "Don't introduce rectangular buttons; actions are pills or circles.",
+      "Don't put gradients on anything but the hero banner and the cover plate.",
+      "Don't rely on cover images alone; every cover needs the typographic fallback.",
+      "Don't use inline styles or hard-coded values in components."
+    ]
+  }
+}
