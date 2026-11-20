@@ -15,38 +15,39 @@ export function VistosRecientes() {
     .map((isbn) => buscarLibroPorIsbn(isbn))
     .filter((libro): libro is Libro => libro !== undefined);
 
+  // Sin libros vistos no se muestra nada: el catálogo sube al primer vistazo.
+  if (libros.length === 0) {
+    return null;
+  }
+
   return (
     <View style={estilos.contenedor}>
       <Text style={estilos.titulo} accessibilityRole="header">
         Vistos recientemente
       </Text>
-      {libros.length === 0 ? (
-        <Text style={estilos.vacio}>Los libros que abras van a aparecer acá.</Text>
-      ) : (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={estilos.fila}>
-          {libros.map((libro) => (
-            <Pressable
-              key={libro.isbn}
-              accessibilityRole="button"
-              accessibilityLabel={`Abrir ${libro.titulo}`}
-              onPress={() => router.push({ pathname: '/libro/[isbn]', params: { isbn: libro.isbn } })}
-              style={({ pressed }) => [estilos.item, pressed && estilos.presionado]}>
-              <Portada libro={libro} tamanio="chica" />
-              <View style={estilos.textos}>
-                <Text style={estilos.tituloItem} numberOfLines={2}>
-                  {libro.titulo}
-                </Text>
-                <Text style={estilos.autor} numberOfLines={1}>
-                  {libro.autor}
-                </Text>
-              </View>
-            </Pressable>
-          ))}
-        </ScrollView>
-      )}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={estilos.fila}>
+        {libros.map((libro) => (
+          <Pressable
+            key={libro.isbn}
+            accessibilityRole="button"
+            accessibilityLabel={`Abrir ${libro.titulo}`}
+            onPress={() => router.push({ pathname: '/libro/[isbn]', params: { isbn: libro.isbn } })}
+            style={({ pressed }) => [estilos.item, pressed && estilos.presionado]}>
+            <Portada libro={libro} tamanio="chica" />
+            <View style={estilos.textos}>
+              <Text style={estilos.tituloItem} numberOfLines={2}>
+                {libro.titulo}
+              </Text>
+              <Text style={estilos.autor} numberOfLines={1}>
+                {libro.autor}
+              </Text>
+            </View>
+          </Pressable>
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -59,10 +60,6 @@ const estilos = StyleSheet.create({
     color: colores.texto,
     fontSize: tamanios.subtitulo,
     fontWeight: tipografia.pesoTitular,
-  },
-  vacio: {
-    color: colores.textoSecundario,
-    fontSize: tamanios.textoChico,
   },
   fila: {
     gap: espaciado.md,
