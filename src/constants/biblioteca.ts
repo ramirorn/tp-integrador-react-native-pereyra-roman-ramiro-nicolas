@@ -10,3 +10,6 @@ export const DEMORA_BUSQUEDA_MS = 300;
 
 // Nombre con el que la persona usuaria aparece en las listas de espera.
 export const MI_NOMBRE = 'Vos';
+
+// Libro que se muestra en la portada del Catálogo.
+export const ISBN_PORTADA_CATALOGO = '9780307474728';

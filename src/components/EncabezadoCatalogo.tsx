@@ -1,37 +1,57 @@
-import { router } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colores, espaciado, tamanios } from '../constants/tema';
-import { BotonAcceso } from './BotonAcceso';
+import { colores, espaciado, tamanios, tipografia } from '../constants/tema';
+import type { FiltroCatalogo } from '../types';
+import { FiltrosCatalogo } from './FiltrosCatalogo';
+import { HeroCatalogo } from './HeroCatalogo';
 import { VistosRecientes } from './VistosRecientes';
 
-export function EncabezadoCatalogo() {
+type Props = {
+  filtro: FiltroCatalogo;
+  onCambiarFiltro: (filtro: FiltroCatalogo) => void;
+  cantidad: number | null;
+};
+
+export function EncabezadoCatalogo({ filtro, onCambiarFiltro, cantidad }: Props) {
   return (
     <View style={estilos.contenedor}>
+      <HeroCatalogo />
+      <FiltrosCatalogo filtro={filtro} onCambiar={onCambiarFiltro} />
       <VistosRecientes />
-      <View style={estilos.accesos}>
-        <BotonAcceso icono="search" titulo="Buscar" onPress={() => router.push('/buscar')} />
-        <BotonAcceso icono="barcode-outline" titulo="Escanear" onPress={() => router.push('/escanear')} />
+      <View style={estilos.seccion}>
+        <Text style={estilos.titulo} accessibilityRole="header">
+          Todo el catálogo
+        </Text>
+        {cantidad !== null && (
+          <Text style={estilos.cantidad}>
+            {cantidad} {cantidad === 1 ? 'libro' : 'libros'}
+          </Text>
+        )}
       </View>
-      <Text style={estilos.titulo} accessibilityRole="header">
-        Todos los libros
-      </Text>
     </View>
   );
 }
 
 const estilos = StyleSheet.create({
   contenedor: {
-    gap: espaciado.lg,
-    padding: espaciado.lg,
+    gap: espaciado.xl,
+    paddingHorizontal: espaciado.lg,
+    paddingTop: espaciado.sm,
+    paddingBottom: espaciado.xs,
   },
-  accesos: {
+  seccion: {
     flexDirection: 'row',
-    gap: espaciado.md,
+    alignItems: 'baseline',
+    justifyContent: 'space-between',
   },
   titulo: {
     color: colores.texto,
     fontSize: tamanios.subtitulo,
-    fontWeight: '700',
+    fontWeight: tipografia.pesoTitular,
+  },
+  cantidad: {
+    color: colores.bosque,
+    fontSize: tamanios.textoChico,
+    fontWeight: tipografia.pesoFuerte,
   },
 });

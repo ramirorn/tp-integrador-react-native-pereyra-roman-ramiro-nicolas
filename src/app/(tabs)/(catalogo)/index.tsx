@@ -1,23 +1,32 @@
-import { router } from 'expo-router';
-import { FlatList, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import { EncabezadoCatalogo } from '../../../components/EncabezadoCatalogo';
 import { EstadoCarga } from '../../../components/EstadoCarga';
 import { EstadoError } from '../../../components/EstadoError';
 import { EstadoVacio } from '../../../components/EstadoVacio';
-import { FilaLibro } from '../../../components/FilaLibro';
+import { TarjetaLibro } from '../../../components/TarjetaLibro';
 import { MENSAJES } from '../../../constants/mensajes';
-import { colores } from '../../../constants/tema';
+import { espaciado, tamanios } from '../../../constants/tema';
 import { useBiblioteca } from '../../../hooks/useBiblioteca';
 import { useLibros } from '../../../hooks/useLibros';
-
-function abrirLibro(isbn: string) {
-  router.push({ pathname: '/libro/[isbn]', params: { isbn } });
-}
+import type { FiltroCatalogo } from '../../../types';
 
 export default function Catalogo() {
   const { libros, cargando, error, reintentar } = useLibros();
-  const { disponibles } = useBiblioteca();
+  const { disponibles, posicionDe, prestamoDe } = useBiblioteca();
+  const [filtro, setFiltro] = useState<FiltroCatalogo>('todos');
+
+  const visibles = libros.filter((libro) => {
+    if (filtro === 'disponibles') {
+      return disponibles(libro) > 0;
+    }
+    if (filtro === 'espera') {
+      return disponibles(libro) === 0;
+    }
+    return true;
+  });
+  const listo = !cargando && !error;
 
   function renderizarVacio() {
     if (cargando) {
@@ -26,26 +35,46 @@ export default function Catalogo() {
     if (error) {
       return <EstadoError mensaje={error} onReintentar={reintentar} />;
     }
-    return <EstadoVacio mensaje={MENSAJES.catalogoVacio} />;
+    return <EstadoVacio mensaje={filtro === 'todos' ? MENSAJES.catalogoVacio : MENSAJES.filtroVacio} />;
   }
 
   return (
     <FlatList
-      style={estilos.lista}
-      data={cargando || error ? [] : libros}
+      data={listo ? visibles : []}
       keyExtractor={(libro) => libro.isbn}
+      numColumns={2}
+      columnWrapperStyle={estilos.fila}
+      contentContainerStyle={estilos.contenido}
       renderItem={({ item }) => (
-        <FilaLibro libro={item} disponibles={disponibles(item)} onPress={abrirLibro} />
+        <View style={estilos.celda}>
+          <TarjetaLibro
+            libro={item}
+            disponibles={disponibles(item)}
+            reservado={prestamoDe(item.isbn) !== undefined || posicionDe(item.isbn) !== null}
+          />
+        </View>
       )}
-      ListHeaderComponent={EncabezadoCatalogo}
+      ListHeaderComponent={
+        <EncabezadoCatalogo
+          filtro={filtro}
+          onCambiarFiltro={setFiltro}
+          cantidad={listo ? visibles.length : null}
+        />
+      }
       ListEmptyComponent={renderizarVacio()}
     />
   );
 }
 
 const estilos = StyleSheet.create({
-  lista: {
-    flex: 1,
-    backgroundColor: colores.fondo,
+  contenido: {
+    paddingBottom: tamanios.espacioBarra,
+  },
+  fila: {
+    paddingHorizontal: espaciado.sm,
+  },
+  celda: {
+    width: '50%',
+    padding: espaciado.sm,
   },
 });

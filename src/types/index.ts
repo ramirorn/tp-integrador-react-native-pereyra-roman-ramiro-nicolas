@@ -30,3 +30,5 @@ export type ResultadoReserva =
   | { tipo: 'rechazada'; motivo: string };
 
 export type ResultadoRecordatorio = 'activado' | 'sin-permiso';
+
+export type FiltroCatalogo = 'todos' | 'disponibles' | 'espera';

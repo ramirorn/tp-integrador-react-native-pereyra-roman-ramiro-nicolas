@@ -1,6 +1,7 @@
 export const MENSAJES = {
   errorCatalogo: 'No pudimos cargar el catálogo. Revisá tu conexión e intentá de nuevo.',
   errorBusqueda: 'No pudimos completar la búsqueda. Intentá de nuevo.',
+  filtroVacio: 'No hay libros que coincidan con este filtro.',
   catalogoVacio: 'Todavía no hay libros cargados en el catálogo.',
   busquedaVacia: 'No encontramos libros con ese título o autor.',
   busquedaInicial: 'Escribí un título o un autor para empezar.',
