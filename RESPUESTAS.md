@@ -193,10 +193,10 @@ Código: `src/app/(tabs)/(catalogo)/escanear.tsx:14-45`.
 | Link | Qué ve la persona | Qué queda debajo | Qué parte del código lo decide |
 | --- | --- | --- | --- |
 | `bibliotecaipf://libro/9788499089515` | Detalle de *El Aleph* | Catálogo (`index`) en el Stack de la tab, dentro de `(tabs)` | `unstable_settings.anchor = 'index'` en `src/app/(tabs)/(catalogo)/_layout.tsx:8-10`; `anchor: '(tabs)'` en `src/app/_layout.tsx:8-10` |
-| `bibliotecaipf://libro/123` | “ISBN inválido” con link al Catálogo | Catálogo | `esIsbnValido` en `src/app/(tabs)/(catalogo)/libro/[isbn].tsx:11` |
-| `bibliotecaipf://buscar?q=borges` | Buscador con los libros de Borges | `(tabs)` con el Catálogo | `anchor: '(tabs)'` en `src/app/_layout.tsx:9`; `useLocalSearchParams` en `src/app/buscar.tsx:19` |
+| `bibliotecaipf://libro/123` | “ISBN inválido” con link al Catálogo ([captura 06](capturas/06-detalle-isbn-invalido.jpg)) | Catálogo | `esIsbnValido` en `src/app/(tabs)/(catalogo)/libro/[isbn].tsx:11` |
+| `bibliotecaipf://buscar?q=borges` | Buscador con los libros de Borges ([captura 04](capturas/04-buscador.jpg)) | `(tabs)` con el Catálogo | `anchor: '(tabs)'` en `src/app/_layout.tsx:9`; `useLocalSearchParams` en `src/app/buscar.tsx:19` |
 | `bibliotecaipf://mostrador` (sin sesión) | El Catálogo (la ruta está bloqueada) | Nada más, solo `(tabs)` | `<Stack.Protected guard={sesion}>` en `src/components/NavegacionRaiz.tsx:34` |
-| `bibliotecaipf://reserva` | Mis reservas | `(tabs)` | `<Redirect href="/reservas" />` en `src/app/reserva.tsx` |
+| `bibliotecaipf://reserva` | Mis reservas ([captura 09](capturas/09-mis-reservas.jpg)) | `(tabs)` | `<Redirect href="/reservas" />` en `src/app/reserva.tsx` |
 | `bibliotecaipf://escanear` (cámara bloqueada) | Escáner con “Cámara bloqueada”, botón “Abrir Ajustes” y el ingreso manual del ISBN | Catálogo (`index`) | `case 'bloqueado'` en `escanear.tsx`, estado calculado en `src/lib/permisos.ts:14` |
 
 **¿Por qué `/libro/123` llega a la pantalla de detalle?** Porque Expo Router hace coincidir rutas por **forma**, no por contenido: `[isbn]` acepta cualquier segmento de texto. El router no sabe qué es un ISBN válido ni qué libros existen. La responsabilidad de responder bien es de la pantalla (y de la lógica que usa): validar el parámetro y mostrar un mensaje con salida. Por eso `libro/[isbn].tsx` valida el formato primero y la existencia después.
@@ -459,16 +459,16 @@ No hay importaciones “hacia arriba”: ningún hook, componente o archivo de `
 
 ### E3. Mapa de fallas
 
-| Situación | Qué ve la persona | Dónde se maneja |
-| --- | --- | --- |
-| `obtenerLibros()` falla | Ícono de nube, “No pudimos cargar el catálogo. Revisá tu conexión e intentá de nuevo.” y “Reintentar” | `src/hooks/useLibros.ts:31-34`; `src/app/(tabs)/(catalogo)/index.tsx:35-37` |
-| Se abre `/libro/abc` | “ISBN inválido – Debe tener 13 números” y link “Volver al catálogo” | `src/app/(tabs)/(catalogo)/libro/[isbn].tsx:11-23` |
-| Se escanea un ISBN que no está en el catálogo | Aviso “Ese libro no está en el catálogo. Probá con otro código. (ISBN …)”; sigue escaneando | `src/app/(tabs)/(catalogo)/escanear.tsx:40-45` |
-| La cámara está bloqueada | “Cámara bloqueada – Podés habilitarla en Ajustes o escribir el ISBN abajo.”, “Abrir Ajustes” e ingreso manual | `escanear.tsx` (`case 'bloqueado'`), `src/components/SolicitudCamara.tsx` |
-| Las notificaciones están denegadas | El interruptor abre `/permisos/notificaciones` con “Abrir Ajustes”; en Mis reservas: “Notificaciones bloqueadas: los avisos van a aparecer acá” y los avisos internos | `src/components/TarjetaPrestamo.tsx:34-39`; `src/components/EncabezadoReservas.tsx`; `BibliotecaProvider.tsx:161-165` |
-| Se intenta reservar un libro ya reservado | En el detalle no aparece “Reservar” sino el estado (“Lo tenés prestado…” / “Estás en la posición…”); si se entra igual a `/reservar/…`: “Ya tenés este libro prestado o estás en su lista de espera.” con “Volver” | `src/components/DetalleLibro.tsx:31-57`; `ConfirmacionReserva.tsx:41-51`; `BibliotecaProvider.tsx:92-94` |
-| “Entregar al siguiente” con la lista vacía | La tarjeta muestra “Al frente: Nadie”, “Esperan 0”, el mensaje “No hay nadie esperando este libro.” y el botón deshabilitado | `src/components/FilaMostrador.tsx`; `BibliotecaProvider.tsx:150-153` |
-| Login con clave incorrecta | “Usuario o clave incorrectos. Revisalos e intentá de nuevo.” | `src/app/login.tsx:17-21` |
+| Situación | Qué ve la persona | Dónde se maneja | Captura |
+| --- | --- | --- | --- |
+| `obtenerLibros()` falla | Ícono de nube, “No pudimos cargar el catálogo. Revisá tu conexión e intentá de nuevo.” y “Reintentar” | `src/hooks/useLibros.ts:31-34`; `src/app/(tabs)/(catalogo)/index.tsx:35-37` | [02](capturas/02-catalogo-error.jpg) |
+| Se abre `/libro/abc` | “ISBN inválido – Debe tener 13 números” y link “Volver al catálogo” | `src/app/(tabs)/(catalogo)/libro/[isbn].tsx:11-23` | [06](capturas/06-detalle-isbn-invalido.jpg) |
+| Se escanea un ISBN que no está en el catálogo | Aviso “Ese libro no está en el catálogo. Probá con otro código. (ISBN …)”; sigue escaneando | `src/app/(tabs)/(catalogo)/escanear.tsx:40-45` | [12](capturas/12-escaner-isbn-inexistente.jpg) (ingreso manual; el aviso del escáner usa la misma validación) |
+| La cámara está bloqueada | “Cámara bloqueada – Podés habilitarla en Ajustes o escribir el ISBN abajo.”, “Abrir Ajustes” e ingreso manual | `escanear.tsx` (`case 'bloqueado'`), `src/components/SolicitudCamara.tsx` | — |
+| Las notificaciones están denegadas | El interruptor abre `/permisos/notificaciones` con “Abrir Ajustes”; en Mis reservas: “Notificaciones bloqueadas: los avisos van a aparecer acá” y los avisos internos | `src/components/TarjetaPrestamo.tsx:34-39`; `src/components/EncabezadoReservas.tsx`; `BibliotecaProvider.tsx:161-165` | [13](capturas/13-permiso-notificaciones-bloqueado.jpg), [18](capturas/18-aviso-dentro-de-la-app.jpg) |
+| Se intenta reservar un libro ya reservado | En el detalle no aparece “Reservar” sino el estado (“Lo tenés prestado…” / “Estás en la posición…”); si se entra igual a `/reservar/…`: “Ya tenés este libro prestado o estás en su lista de espera.” con “Volver” | `src/components/DetalleLibro.tsx:31-57`; `ConfirmacionReserva.tsx:41-51`; `BibliotecaProvider.tsx:92-94` | — |
+| “Entregar al siguiente” con la lista vacía | La tarjeta muestra “Al frente: Nadie”, “Esperan 0”, el mensaje “No hay nadie esperando este libro.” y el botón deshabilitado | `src/components/FilaMostrador.tsx`; `BibliotecaProvider.tsx:150-153` | [17](capturas/17-mostrador-entregado-a-vos.jpg) |
+| Login con clave incorrecta | “Usuario o clave incorrectos. Revisalos e intentá de nuevo.” | `src/app/login.tsx:17-21` | [14](capturas/14-login-clave-incorrecta.jpg) |
 
 ### E4. Decisiones con argumentos
 
