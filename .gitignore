@@ -41,3 +41,9 @@ example
 # generated native folders
 /ios
 /android
+
+# impeccable (archivos locales)
+.impeccable/config.local.json
+.impeccable/review/
+.impeccable/mocks/
+.impeccable/reference/
