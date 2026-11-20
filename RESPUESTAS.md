@@ -34,12 +34,19 @@ Caso con error y “Reintentar”:
 
 **b) ¿Se desmonta el Catálogo?**
 
-No en ninguno de los dos casos. Con un `console.log` temporal en la limpieza (línea 45) no apareció nada al cambiar a “Mis reservas” ni al abrir un detalle:
+No en ninguno de los dos casos. Lo comprobé con un `console.log('[TEMP] limpieza useLibros')` temporal dentro de la limpieza (después de la línea 45; ya lo saqué). Recorrí la app y miré la consola:
+
+- Cambiar a “Mis reservas” y volver: no apareció el mensaje.
+- Abrir un detalle y volver con “atrás”: no apareció.
+- Iniciar sesión, ir al mostrador y cerrar sesión: tampoco.
+- Tocar “Reintentar” después del error simulado: **sí** apareció, una vez.
+
+Por qué:
 
 - Las tabs mantienen montadas las pantallas que ya visitaste; solo cambian cuál se ve.
 - Al abrir un detalle se hace `push` en el Stack de la tab: el Catálogo queda debajo, montado.
 
-La limpieza se ejecuta en dos situaciones reales: cuando cambia `intento` (cada “Reintentar”, para descartar el pedido anterior) y cuando el Catálogo se desmonta de verdad, por ejemplo cuando el Stack de la tab se reconstruye o se cierra la app. Por eso el flag `activo` es necesario: si la respuesta llega después, no se llama a `setState` sobre un pedido que ya no importa.
+Entonces la limpieza se ejecuta en dos situaciones reales: cuando cambia `intento` (cada “Reintentar”, que es lo que vi en la consola) y cuando el Catálogo se desmonta de verdad, por ejemplo al recargar o cerrar la app. Por eso el flag `activo` es necesario: si la respuesta llega después, no se llama a `setState` sobre un pedido que ya no importa.
 
 **c) `async` directo en `useEffect`**
 
@@ -70,7 +77,7 @@ Usé un contador y no otro valor porque:
 
 ### B2. La condición de carrera del buscador
 
-Código: `src/hooks/useBusqueda.ts:26-62`, `src/app/buscar.tsx:22-33`.
+Código: `src/hooks/useBusqueda.ts:26-62`, `src/app/buscar.tsx:19-30`.
 
 | Momento | Qué pasa | Sin limpieza: qué se ve | Con mi código: qué se ve |
 | --- | --- | --- | --- |
@@ -157,17 +164,17 @@ Sí: el Catálogo usa `disponibles` y `VistosRecientes` usa `recientes`, y al ac
 | 2 | Toca un libro | Raíz: `[(tabs)]` · Catálogo: `[index, libro/X]` |
 | 3 | Toca “Reservar” | Raíz: `[(tabs), reservar/X (modal)]` · Catálogo: `[index, libro/X]` |
 | 4 | Toca “Confirmar” | Raíz: `[(tabs)]` · Tab activa: Mis reservas `[reservas]` · Catálogo sigue `[index, libro/X]` |
-| 5 | Atrás (Android) | Raíz: `[(tabs)]` · El “atrás” de las tabs vuelve a la tab Catálogo, que muestra `libro/X` |
+| 5 | Atrás (Android) | Raíz: `[(tabs)]` · Las tabs usan `backBehavior: 'firstRoute'` (el valor por defecto en `expo-router`), así que “atrás” vuelve a la primera tab, Catálogo, que sigue mostrando `libro/X` |
 | 6 | Toca la tab “Catálogo” | Raíz: `[(tabs)]` · Catálogo: `[index]` (tocar la tab que ya está activa vuelve al inicio de su Stack) |
 
-**a)** En el paso 4 uso `router.dismiss()` y después `router.navigate('/reservas')` (`src/components/ConfirmacionReserva.tsx:36-37`).
+**a)** En el paso 4 uso `router.dismiss()` y después `router.navigate('/reservas')` (`src/components/ConfirmacionReserva.tsx:37-38`).
 
 - `push('/reservas')`: el modal quedaría en el historial; “atrás” desde Mis reservas volvería a la confirmación, justo lo que pide evitar el enunciado.
 - `replace('/reservas')`: reemplaza el modal en el Stack raíz por una ruta que vive dentro de `(tabs)`. Puede terminar creando un segundo `(tabs)` encima del primero (dos barras de pestañas en el historial).
 - `dismissTo('/reservas')`: cierra pantallas hasta encontrar esa ruta, pero `/reservas` no está en el historial del Stack raíz (está dentro de las tabs), así que termina comportándose como un `replace`.
 - `dismiss` + `navigate`: el modal se saca del historial y `navigate` cambia de pestaña sin apilar nada. Es lo único que deja el historial limpio.
 
-**b)** Si desde Mis reservas se toca la tab “Catálogo” se ve el **detalle**, porque cada tab conserva su propio Stack (`[index, libro/X]`). Si la tab Catálogo ya estaba activa (como después del paso 5), tocarla otra vez vuelve al `index`. Me parece correcto: conservar el Stack de la tab es lo que esperan las personas (volver a donde estaban), y tocar la tab activa para “volver al inicio” es un gesto conocido.
+**b)** Si desde Mis reservas se toca la tab “Catálogo” se ve el **detalle**, porque cada tab conserva su propio Stack (`[index, libro/X]`). Si la tab Catálogo ya estaba activa (como después del paso 5), tocarla otra vez vuelve al `index`. Lo probé así: abrí un libro, fui a Mis reservas, toqué Catálogo (se vio el detalle) y la toqué de nuevo (volvió al Catálogo). Mi barra de pestañas propia (`BarraPestanias.tsx`) emite el mismo evento `tabPress` que la barra estándar, por eso se mantiene este comportamiento. Me parece correcto: conservar el Stack de la tab es lo que esperan las personas (volver a donde estaban), y tocar la tab activa para “volver al inicio” es un gesto conocido.
 
 ### C2. El escáner que dispara de más
 
@@ -187,10 +194,10 @@ Código: `src/app/(tabs)/(catalogo)/escanear.tsx:14-45`.
 | --- | --- | --- | --- |
 | `bibliotecaipf://libro/9788499089515` | Detalle de *El Aleph* | Catálogo (`index`) en el Stack de la tab, dentro de `(tabs)` | `unstable_settings.anchor = 'index'` en `src/app/(tabs)/(catalogo)/_layout.tsx:8-10`; `anchor: '(tabs)'` en `src/app/_layout.tsx:8-10` |
 | `bibliotecaipf://libro/123` | “ISBN inválido” con link al Catálogo | Catálogo | `esIsbnValido` en `src/app/(tabs)/(catalogo)/libro/[isbn].tsx:11` |
-| `bibliotecaipf://buscar?q=borges` | Buscador con los libros de Borges | `(tabs)` con el Catálogo | `anchor: '(tabs)'` en `src/app/_layout.tsx:9`; `useLocalSearchParams` en `src/app/buscar.tsx:22` |
-| `bibliotecaipf://mostrador` (sin sesión) | El Catálogo (la ruta está bloqueada) | Nada más, solo `(tabs)` | `<Stack.Protected guard={sesion}>` en `src/components/NavegacionRaiz.tsx:31` |
+| `bibliotecaipf://buscar?q=borges` | Buscador con los libros de Borges | `(tabs)` con el Catálogo | `anchor: '(tabs)'` en `src/app/_layout.tsx:9`; `useLocalSearchParams` en `src/app/buscar.tsx:19` |
+| `bibliotecaipf://mostrador` (sin sesión) | El Catálogo (la ruta está bloqueada) | Nada más, solo `(tabs)` | `<Stack.Protected guard={sesion}>` en `src/components/NavegacionRaiz.tsx:34` |
 | `bibliotecaipf://reserva` | Mis reservas | `(tabs)` | `<Redirect href="/reservas" />` en `src/app/reserva.tsx` |
-| `bibliotecaipf://escanear` (cámara bloqueada) | Escáner con “La cámara está bloqueada…”, botón “Abrir Ajustes” y el ingreso manual | Catálogo (`index`) | `case 'bloqueado'` en `escanear.tsx`, estado calculado en `src/lib/permisos.ts:14` |
+| `bibliotecaipf://escanear` (cámara bloqueada) | Escáner con “Cámara bloqueada”, botón “Abrir Ajustes” y el ingreso manual del ISBN | Catálogo (`index`) | `case 'bloqueado'` en `escanear.tsx`, estado calculado en `src/lib/permisos.ts:14` |
 
 **¿Por qué `/libro/123` llega a la pantalla de detalle?** Porque Expo Router hace coincidir rutas por **forma**, no por contenido: `[isbn]` acepta cualquier segmento de texto. El router no sabe qué es un ISBN válido ni qué libros existen. La responsabilidad de responder bien es de la pantalla (y de la lógica que usa): validar el parámetro y mostrar un mensaje con salida. Por eso `libro/[isbn].tsx` valida el formato primero y la existencia después.
 
@@ -214,10 +221,10 @@ Código: `src/app/(tabs)/(catalogo)/escanear.tsx:14-45`.
 
 | # | Acción | Qué muestra mi app | `status` | `canAskAgain` |
 | --- | --- | --- | --- | --- |
-| 1 | Toca “Escanear” por primera vez | Escáner con “Para escanear necesitamos usar la cámara” + “Activar cámara” + ingreso manual (estado preguntable). Al tocar “Activar cámara” se abre `/permisos/camara` con el beneficio y “Continuar” | `undetermined` | `true` |
+| 1 | Toca “Escanear” por primera vez | Escáner con “Escaneá la contratapa” + “Activar cámara” + ingreso manual (estado preguntable). Al tocar “Activar cámara” se abre `/permisos/camara` con el beneficio y “Continuar” | `undetermined` | `true` |
 | 2 | “Continuar” → “No permitir” | Vuelve al escáner, sigue en preguntable | `denied` | `true` |
 | 3 | Toca “Escanear” otra vez | Igual que el paso 1 | `denied` | `true` |
-| 4 | “Continuar” → “No permitir” | Android ya no deja volver a preguntar: el escáner muestra “La cámara está bloqueada…” y “Abrir Ajustes” | `denied` | `false` |
+| 4 | “Continuar” → “No permitir” | Android ya no deja volver a preguntar: el escáner muestra “Cámara bloqueada” y “Abrir Ajustes” | `denied` | `false` |
 | 5 | Toca “Escanear” otra vez | Estado bloqueado: “Abrir Ajustes” + ingreso manual | `denied` | `false` |
 | 6 | “Abrir Ajustes” → habilita → vuelve | `AppState` pasa a `active`, se vuelve a leer el permiso y aparece la cámara | `granted` | `true` |
 
@@ -231,7 +238,7 @@ return respuesta.canAskAgain ? 'preguntable' : 'bloqueado';
 
 Usa `canAskAgain`. Con `status` no alcanza porque vale `denied` tanto después del primer rechazo (todavía se puede preguntar) como cuando está bloqueado. Si solo mirara `status`, mostraría “Continuar” y el sistema no abriría ningún diálogo: un botón que no hace nada.
 
-**c)** Se entera el listener de `AppState` de `usePermiso` (`src/hooks/usePermiso.ts:24-31`), que llama a `obtener()` cuando la app vuelve a `active`. Sin esa parte, la app seguiría mostrando “La cámara está bloqueada” aunque ya esté habilitada, hasta que la persona salga de la pantalla y vuelva a entrar.
+**c)** Se entera el listener de `AppState` de `usePermiso` (`src/hooks/usePermiso.ts:24-31`), que llama a `obtener()` cuando la app vuelve a `active`. Sin esa parte, la app seguiría mostrando “Cámara bloqueada” aunque ya esté habilitada, hasta que la persona salga de la pantalla y vuelva a entrar.
 
 ### D2. Notificaciones y consistencia
 
@@ -315,7 +322,7 @@ Lo verificaría con un development build (`npx expo run:android` o `eas build --
 | 3 | 18-20 | Advertencia | Sin limpieza: si el componente se desmonta o llega una respuesta vieja, igual se llama a `setLibros` | Flag `activo` en la limpieza |
 | 4 | 13-16 | Mala práctica (rechazo en tiendas) | Pide cámara y notificaciones apenas se abre la app, sin contexto ni pantalla previa | Pedir cada permiso al usar la función (escáner / interruptor) con `/permisos/[recurso]` |
 | 5 | 13-16 | Advertencia | Dependencias incompletas: usa `pedirPermiso` y el array está vacío (`react-hooks/exhaustive-deps`) | Desaparece al sacar el pedido de ahí |
-| 6 | 22-30 | Rendimiento / mala práctica | `Fila` se declara dentro de `Catalogo`: en cada render es un componente **nuevo**, React desmonta y vuelve a montar todas las filas | Componente en su propio archivo (`FilaLibro.tsx`) |
+| 6 | 22-30 | Rendimiento / mala práctica | `Fila` se declara dentro de `Catalogo`: en cada render es un componente **nuevo**, React desmonta y vuelve a montar todas las filas | Componente en su propio archivo (`TarjetaLibro.tsx`) |
 | 7 | 35 | Advertencia / mala práctica | `key={i}` usa el índice: si la lista cambia de orden o se filtra, React mezcla el estado de las filas | `keyExtractor={(libro) => libro.isbn}` |
 | 8 | 33-36 | Rendimiento | `ScrollView` + `map` renderiza todos los libros juntos | `FlatList`, que virtualiza |
 | 9 | 10, 22 | Mala práctica | `any`: se pierde el chequeo de tipos (por ejemplo, `libro.titlo` compilaría) | `Libro` de `src/types` |
@@ -339,53 +346,89 @@ Si `obtenerLibros()` devolviera siempre **el mismo array**, `setLibros` recibir�
 **c) Reescrita con mi app**
 
 ```tsx
-import { router } from 'expo-router';
-import { FlatList, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import { EncabezadoCatalogo } from '../../../components/EncabezadoCatalogo';
 import { EstadoCarga } from '../../../components/EstadoCarga';
 import { EstadoError } from '../../../components/EstadoError';
 import { EstadoVacio } from '../../../components/EstadoVacio';
-import { FilaLibro } from '../../../components/FilaLibro';
+import { TarjetaLibro } from '../../../components/TarjetaLibro';
 import { MENSAJES } from '../../../constants/mensajes';
-import { colores } from '../../../constants/tema';
+import { espaciado, tamanios } from '../../../constants/tema';
 import { useBiblioteca } from '../../../hooks/useBiblioteca';
 import { useLibros } from '../../../hooks/useLibros';
-
-function abrirLibro(isbn: string) {
-  router.push({ pathname: '/libro/[isbn]', params: { isbn } });
-}
+import type { FiltroCatalogo } from '../../../types';
 
 export default function Catalogo() {
   const { libros, cargando, error, reintentar } = useLibros();
-  const { disponibles } = useBiblioteca();
+  const { disponibles, posicionDe, prestamoDe } = useBiblioteca();
+  const [filtro, setFiltro] = useState<FiltroCatalogo>('todos');
+
+  const visibles = libros.filter((libro) => {
+    if (filtro === 'disponibles') {
+      return disponibles(libro) > 0;
+    }
+    if (filtro === 'espera') {
+      return disponibles(libro) === 0;
+    }
+    return true;
+  });
+  const listo = !cargando && !error;
 
   function renderizarVacio() {
-    if (cargando) return <EstadoCarga mensaje="Cargando el catálogo…" />;
-    if (error) return <EstadoError mensaje={error} onReintentar={reintentar} />;
-    return <EstadoVacio mensaje={MENSAJES.catalogoVacio} />;
+    if (cargando) {
+      return <EstadoCarga mensaje="Cargando el catálogo…" />;
+    }
+    if (error) {
+      return <EstadoError mensaje={error} onReintentar={reintentar} />;
+    }
+    return <EstadoVacio mensaje={filtro === 'todos' ? MENSAJES.catalogoVacio : MENSAJES.filtroVacio} />;
   }
 
   return (
     <FlatList
-      style={estilos.lista}
-      data={cargando || error ? [] : libros}
+      data={listo ? visibles : []}
       keyExtractor={(libro) => libro.isbn}
+      numColumns={2}
+      columnWrapperStyle={estilos.fila}
+      contentContainerStyle={estilos.contenido}
       renderItem={({ item }) => (
-        <FilaLibro libro={item} disponibles={disponibles(item)} onPress={abrirLibro} />
+        <View style={estilos.celda}>
+          <TarjetaLibro
+            libro={item}
+            disponibles={disponibles(item)}
+            reservado={prestamoDe(item.isbn) !== undefined || posicionDe(item.isbn) !== null}
+          />
+        </View>
       )}
-      ListHeaderComponent={EncabezadoCatalogo}
+      ListHeaderComponent={
+        <EncabezadoCatalogo
+          filtro={filtro}
+          onCambiarFiltro={setFiltro}
+          cantidad={listo ? visibles.length : null}
+        />
+      }
       ListEmptyComponent={renderizarVacio()}
     />
   );
 }
 
 const estilos = StyleSheet.create({
-  lista: { flex: 1, backgroundColor: colores.fondo },
+  contenido: {
+    paddingBottom: tamanios.espacioBarra,
+  },
+  fila: {
+    paddingHorizontal: espaciado.sm,
+  },
+  celda: {
+    width: '50%',
+    padding: espaciado.sm,
+  },
 });
 ```
 
-Es el archivo real `src/app/(tabs)/(catalogo)/index.tsx`. El acceso a “Escanear” está en `EncabezadoCatalogo` con `BotonAcceso` (ícono + texto, `accessibilityRole="button"`, 44 px de alto) y los permisos se piden recién en el escáner.
+Es el archivo real `src/app/(tabs)/(catalogo)/index.tsx`. Cada tarjeta es un componente propio (`TarjetaLibro`), la key es el ISBN, hay estados de carga, error y vacío, y los estilos salen de `tema.ts`. Al escáner se entra desde el botón central de la barra de pestañas (`BarraPestanias`, con `accessibilityLabel="Escanear código de barras"` y 64 × 64), y los permisos se piden recién en el escáner, nunca al abrir la app.
 
 **d)** Lo que podría provocar el **rechazo en una tienda** es pedir cámara y notificaciones al abrir la app sin contexto (líneas 13-16): Apple exige que el permiso se pida cuando se usa la función y con un propósito claro, y Google Play revisa los permisos que no tienen una función visible que los justifique. Lo que haría que una persona la **desinstale primero** es el bucle de la línea 18: la app parpadea, gasta datos y batería sin parar, y con la red lenta se vuelve inusable. Dos diálogos de permisos de entrada también espantan, pero el bucle se nota en cada uso.
 
@@ -418,14 +461,14 @@ No hay importaciones “hacia arriba”: ningún hook, componente o archivo de `
 
 | Situación | Qué ve la persona | Dónde se maneja |
 | --- | --- | --- |
-| `obtenerLibros()` falla | Ícono de nube, “No pudimos cargar el catálogo. Revisá tu conexión e intentá de nuevo.” y “Reintentar” | `src/hooks/useLibros.ts:31-34`; `src/app/(tabs)/(catalogo)/index.tsx:26-28` |
+| `obtenerLibros()` falla | Ícono de nube, “No pudimos cargar el catálogo. Revisá tu conexión e intentá de nuevo.” y “Reintentar” | `src/hooks/useLibros.ts:31-34`; `src/app/(tabs)/(catalogo)/index.tsx:35-37` |
 | Se abre `/libro/abc` | “ISBN inválido – Debe tener 13 números” y link “Volver al catálogo” | `src/app/(tabs)/(catalogo)/libro/[isbn].tsx:11-23` |
-| Se escanea un ISBN que no está en el catálogo | Aviso “Ese libro no está en el catálogo. Probá con otro código. (ISBN …)”; sigue escaneando | `src/app/(tabs)/(catalogo)/escanear.tsx:40-44` |
-| La cámara está bloqueada | “La cámara está bloqueada para esta app…”, “Abrir Ajustes” e ingreso manual | `escanear.tsx` (`case 'bloqueado'`), `src/components/SolicitudCamara.tsx` |
-| Las notificaciones están denegadas | El interruptor abre `/permisos/notificaciones` con “Abrir Ajustes”; en Mis reservas: “Notificaciones bloqueadas: los avisos van a aparecer acá” y los avisos internos | `src/components/TarjetaPrestamo.tsx:31-37`; `src/components/EncabezadoReservas.tsx`; `BibliotecaProvider.tsx:161-165` |
-| Se intenta reservar un libro ya reservado | En el detalle no aparece “Reservar” sino el estado (“Lo tenés prestado…” / “Estás en la posición…”); si se entra igual a `/reservar/…`: “Ya tenés este libro prestado o estás en su lista de espera.” con “Volver” | `src/components/DetalleLibro.tsx:27-44`; `ConfirmacionReserva.tsx:40-49`; `BibliotecaProvider.tsx:92-94` |
-| “Entregar al siguiente” con la lista vacía | “No hay nadie esperando este libro.” y el botón deshabilitado | `src/components/FilaMostrador.tsx`; `BibliotecaProvider.tsx:150-153` |
-| Login con clave incorrecta | “Usuario o clave incorrectos. Revisalos e intentá de nuevo.” | `src/app/login.tsx:16-19` |
+| Se escanea un ISBN que no está en el catálogo | Aviso “Ese libro no está en el catálogo. Probá con otro código. (ISBN …)”; sigue escaneando | `src/app/(tabs)/(catalogo)/escanear.tsx:40-45` |
+| La cámara está bloqueada | “Cámara bloqueada – Podés habilitarla en Ajustes o escribir el ISBN abajo.”, “Abrir Ajustes” e ingreso manual | `escanear.tsx` (`case 'bloqueado'`), `src/components/SolicitudCamara.tsx` |
+| Las notificaciones están denegadas | El interruptor abre `/permisos/notificaciones` con “Abrir Ajustes”; en Mis reservas: “Notificaciones bloqueadas: los avisos van a aparecer acá” y los avisos internos | `src/components/TarjetaPrestamo.tsx:34-39`; `src/components/EncabezadoReservas.tsx`; `BibliotecaProvider.tsx:161-165` |
+| Se intenta reservar un libro ya reservado | En el detalle no aparece “Reservar” sino el estado (“Lo tenés prestado…” / “Estás en la posición…”); si se entra igual a `/reservar/…`: “Ya tenés este libro prestado o estás en su lista de espera.” con “Volver” | `src/components/DetalleLibro.tsx:31-57`; `ConfirmacionReserva.tsx:41-51`; `BibliotecaProvider.tsx:92-94` |
+| “Entregar al siguiente” con la lista vacía | La tarjeta muestra “Al frente: Nadie”, “Esperan 0”, el mensaje “No hay nadie esperando este libro.” y el botón deshabilitado | `src/components/FilaMostrador.tsx`; `BibliotecaProvider.tsx:150-153` |
+| Login con clave incorrecta | “Usuario o clave incorrectos. Revisalos e intentá de nuevo.” | `src/app/login.tsx:17-21` |
 
 ### E4. Decisiones con argumentos
 
