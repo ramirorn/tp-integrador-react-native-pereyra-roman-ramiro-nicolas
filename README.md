@@ -123,7 +123,7 @@ En Expo Go reemplazar `bibliotecaipf://` por `exp://IP:8081/--/`.
 
 | Link | Resultado esperado |
 | --- | --- |
-| `bibliotecaipf://libro/9789897220715` | Detalle de *El Aleph*, con el Catálogo debajo |
+| `bibliotecaipf://libro/9788499089515` | Detalle de *El Aleph*, con el Catálogo debajo |
 | `bibliotecaipf://libro/123` | Mensaje "ISBN inválido" con link al Catálogo |
 | `bibliotecaipf://libro/9789999999999` | Mensaje "Libro no encontrado" |
 | `bibliotecaipf://buscar?q=borges` | Buscador con resultados de Borges y las tabs debajo |

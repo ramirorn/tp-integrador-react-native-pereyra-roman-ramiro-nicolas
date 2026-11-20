@@ -18,14 +18,14 @@ export const LIBROS: Libro[] = [
     ejemplares: 1,
   },
   {
-    isbn: '9788499089515',
+    isbn: '9789500428446',
     titulo: 'Ficciones',
     autor: 'Jorge Luis Borges',
     anio: 1944,
     ejemplares: 0,
   },
   {
-    isbn: '9789897220715',
+    isbn: '9788499089515',
     titulo: 'El Aleph',
     autor: 'Jorge Luis Borges',
     anio: 1949,
@@ -119,6 +119,6 @@ export const LIBROS: Libro[] = [
 
 // Listas de espera al iniciar la app (solo libros sin ejemplares).
 export const ESPERAS_INICIALES: Record<string, string[]> = {
-  '9788499089515': ['Lucía Gómez', 'Martín Ríos'],
+  '9789500428446': ['Lucía Gómez', 'Martín Ríos'],
   '9788432221552': ['Sofía Benítez'],
 };
