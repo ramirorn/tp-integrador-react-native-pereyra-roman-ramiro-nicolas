@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colores, espaciado, tamanios } from '../constants/tema';
+import { colores, espaciado, tamanios, tipografia } from '../constants/tema';
 
 type Props = {
   etiqueta: string;
@@ -30,7 +30,8 @@ const estilos = StyleSheet.create({
     flexShrink: 1,
     color: colores.texto,
     fontSize: tamanios.texto,
-    fontWeight: '600',
+    fontWeight: tipografia.pesoFuerte,
+    fontVariant: ['tabular-nums'],
     textAlign: 'right',
   },
 });
