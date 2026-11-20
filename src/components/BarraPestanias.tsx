@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { router } from 'expo-router';
+import { router, usePathname } from 'expo-router';
 import type { BottomTabBarProps } from 'expo-router/tabs';
 import type { ComponentProps } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -17,6 +17,8 @@ const ICONOS: Record<string, { activo: NombreIcono; inactivo: NombreIcono }> = {
 // Barra flotante verde bosque: dos pestañas y, en el centro, el botón
 // elevado que abre el escáner (es una acción, no una pestaña).
 export function BarraPestanias({ state, descriptors, emitter, navigateToTab }: BottomTabBarProps) {
+  const ruta = usePathname();
+  const enEscaner = ruta === '/escanear';
   const [primera, ...resto] = state.routes;
 
   function renderizarPestania(ruta: (typeof state.routes)[number]) {
@@ -63,7 +65,13 @@ export function BarraPestanias({ state, descriptors, emitter, navigateToTab }: B
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Escanear código de barras"
-        onPress={() => router.push('/escanear')}
+        accessibilityState={{ selected: enEscaner }}
+        onPress={() => {
+          // Si ya está en el escáner, no se apila otro.
+          if (!enEscaner) {
+            router.push('/escanear');
+          }
+        }}
         style={({ pressed }) => [estilos.botonCentral, pressed && estilos.presionado]}>
         <Ionicons name="barcode-outline" size={tamanios.iconoGrande - espaciado.sm} color={colores.bosqueProfundo} />
       </Pressable>
