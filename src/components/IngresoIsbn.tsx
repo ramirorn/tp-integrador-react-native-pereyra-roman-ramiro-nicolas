@@ -29,7 +29,7 @@ export function IngresoIsbn({ onIsbn }: Props) {
           setTexto(valor);
           setError(null);
         }}
-        placeholder="Ej.: 9789500725613"
+        placeholder="Ej.: 9789897220715"
         placeholderTextColor={colores.textoSecundario}
         keyboardType="number-pad"
         maxLength={LARGO_ISBN + 4}

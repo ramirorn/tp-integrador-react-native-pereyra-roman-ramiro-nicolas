@@ -23,7 +23,7 @@ npm test             # pruebas de Pila y Cola (jest-expo)
 
 **Credenciales del personal** (fijas en `src/constants/personal.ts`): usuario `biblioteca`, clave `ipf2026`.
 
-**Libros para probar el escáner:** `Cien años de soledad` (9780307474728) y `El principito` (9788498381498) tienen ISBN reales de ediciones en papel. Si tenés otro libro a mano, se puede reemplazar el ISBN en `src/data/libros.ts`.
+**Libros para probar el escáner:** los 16 libros usan ISBN de ediciones reales (verificados en Open Library), por ejemplo `Cien años de soledad` (9780307474728) y `El principito` (9788498381498). Si tenés otro libro a mano, se puede reemplazar el ISBN en `src/data/libros.ts`.
 
 ## Árbol de rutas (`src/app`)
 
@@ -123,7 +123,7 @@ En Expo Go reemplazar `bibliotecaipf://` por `exp://IP:8081/--/`.
 
 | Link | Resultado esperado |
 | --- | --- |
-| `bibliotecaipf://libro/9789500725613` | Detalle de *El Aleph*, con el Catálogo debajo |
+| `bibliotecaipf://libro/9789897220715` | Detalle de *El Aleph*, con el Catálogo debajo |
 | `bibliotecaipf://libro/123` | Mensaje "ISBN inválido" con link al Catálogo |
 | `bibliotecaipf://libro/9789999999999` | Mensaje "Libro no encontrado" |
 | `bibliotecaipf://buscar?q=borges` | Buscador con resultados de Borges y las tabs debajo |
