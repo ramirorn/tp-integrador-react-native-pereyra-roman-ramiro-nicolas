@@ -47,7 +47,7 @@ export function Boton({
         <Ionicons
           name={icono}
           size={tamanios.icono}
-          color={deshabilitado ? colores.superficie : COLOR_TEXTO[variante]}
+          color={deshabilitado ? colores.textoSecundario : COLOR_TEXTO[variante]}
         />
       )}
       <Text
@@ -92,8 +92,8 @@ const estilos = StyleSheet.create({
     opacity: opacidad.presionado,
   },
   deshabilitado: {
-    backgroundColor: colores.deshabilitado,
-    borderColor: colores.deshabilitado,
+    backgroundColor: colores.deshabilitadoFondo,
+    borderColor: colores.deshabilitadoFondo,
     boxShadow: 'none',
   },
   texto: {
@@ -113,6 +113,6 @@ const estilos = StyleSheet.create({
     color: colores.superficie,
   },
   textoDeshabilitado: {
-    color: colores.superficie,
+    color: colores.textoSecundario,
   },
 });

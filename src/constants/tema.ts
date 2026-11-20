@@ -5,8 +5,8 @@ export const colores = {
   bosqueProfundo: '#0A3328',
   menta: '#3DDC97',
   mentaClara: '#BDF2D7',
-  placa: '#E3F5EA',
-  fondo: '#F1F8F3',
+  placa: '#DDF6EA',
+  fondo: '#F3FCF8',
   superficie: '#FFFFFF',
   texto: '#0D1F19',
   textoSecundario: '#4C6359',
@@ -19,7 +19,7 @@ export const colores = {
   errorSuave: '#FDE6E3',
   aviso: '#8A4B0B',
   avisoSuave: '#FCEFD8',
-  deshabilitado: '#A6B8AF',
+  deshabilitadoFondo: '#E2F1E9',
   camaraFondo: '#000000',
   // Paleta de las portadas de respaldo (cuando la imagen no carga).
   portadas: ['#0E4D3A', '#1F6F5C', '#2D5A7B', '#7A4E2D', '#5B3F7A', '#8C2F39'],
@@ -46,7 +46,7 @@ export const espaciado = {
 } as const;
 
 export const tamanios = {
-  textoMini: 10,
+  textoMini: 11,
   textoMicro: 11,
   textoChico: 13,
   texto: 15,
@@ -81,7 +81,7 @@ export const tipografia = {
   pesoNormal: '400',
   pesoMedio: '600',
   pesoFuerte: '700',
-  pesoTitular: '800',
+  pesoTitular: '700',
   interletraTitular: -0.4,
 } as const;
 
