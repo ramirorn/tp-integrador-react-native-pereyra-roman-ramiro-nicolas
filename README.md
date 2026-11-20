@@ -63,7 +63,7 @@ src/app
 | Carpeta | Contenido |
 | --- | --- |
 | `app` | Solo rutas y layouts |
-| `components` | Un componente por archivo (`Boton`, `FilaLibro`, `EscanerCamara`, `NavegacionRaiz`…) |
+| `components` | Un componente por archivo (`Boton`, `TarjetaLibro`, `BarraPestanias`, `EscanerCamara`…) |
 | `hooks` | `useLibros`, `useBusqueda`, `useDebounce`, `usePermiso`, `usePermisosNotificaciones`, `useBiblioteca` |
 | `lib` | Lógica sin React: `api` (entregado), `catalogo`, `reservas`, `recientes`, `fechas`, `permisos`, `notificaciones` |
 | `context` | `BibliotecaContext` y `BibliotecaProvider` (préstamos, esperas, recientes, sesión y avisos) |
